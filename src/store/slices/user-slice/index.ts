@@ -7,6 +7,8 @@ import {
   asyncRegistration,
 } from "./requests";
 
+const defaultError = "Server connection error";
+
 interface IUserSlice {
   user: IUser;
   isAuth: boolean;
@@ -39,7 +41,6 @@ const userSlice = createSlice({
     },
 
     setAuth: (state, action) => {
-      console.log("setAuth", action.payload);
       const { isAuth } = action.payload;
       state.isAuth = isAuth;
     },
@@ -63,7 +64,7 @@ const userSlice = createSlice({
     builder.addCase(asyncLogin.rejected, (state, action) => {
       state.error = {
         show: true,
-        message: (action as IRejectAction).payload.message,
+        message: (action as IRejectAction).payload?.message || defaultError,
       };
       state.isLoading = false;
     });
@@ -77,7 +78,7 @@ const userSlice = createSlice({
     builder.addCase(asyncRegistration.rejected, (state, action) => {
       state.error = {
         show: true,
-        message: (action as IRejectAction).payload.message,
+        message: (action as IRejectAction).payload?.message || defaultError,
       };
     });
 
@@ -87,7 +88,6 @@ const userSlice = createSlice({
     });
 
     builder.addCase(asyncCheckAuth.fulfilled, (state, action) => {
-      console.log("action.payload", action.payload);
       const { user } = action.payload;
       state.user = { ...user };
       state.isAuth = true;
@@ -97,7 +97,7 @@ const userSlice = createSlice({
     builder.addCase(asyncCheckAuth.rejected, (state, action) => {
       state.error = {
         show: true,
-        message: (action as IRejectAction).payload.message,
+        message: (action as IRejectAction).payload?.message || defaultError,
       };
       state.isAuth = false;
       state.isLoading = false;

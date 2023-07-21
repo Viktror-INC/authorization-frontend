@@ -11,6 +11,7 @@ api.interceptors.response.use(
   },
   async (error) => {
     const response = error.response;
+
     try {
       if (
         response.status == 401 &&
@@ -24,10 +25,12 @@ api.interceptors.response.use(
           withCredentials: true,
         });
 
-        return api.request(error.config);
+        return api.request(response);
       }
+
+      return Promise.reject(error);
     } catch {
-      return Promise.reject(error.response);
+      return Promise.reject(error);
     }
   }
 );
