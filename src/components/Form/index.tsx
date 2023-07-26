@@ -5,7 +5,7 @@ import {
   TextField,
   TextFieldVariants,
 } from "@mui/material";
-import { FormStyle } from "./styles";
+import { FormStyle, FormTitleStyle } from "./styles";
 import { FormikProps } from "formik";
 
 type ButtonObject = ButtonProps & {
@@ -13,6 +13,7 @@ type ButtonObject = ButtonProps & {
 };
 
 interface IForm<T> {
+  title?: string;
   formik: FormikProps<T>;
   fields: {
     id: string;
@@ -24,9 +25,11 @@ interface IForm<T> {
 }
 
 const Form = <T,>(props: IForm<T>) => {
-  const { formik, fields, buttons } = props;
+  const { title, formik, fields, buttons } = props;
   return (
     <FormStyle onSubmit={formik.handleSubmit}>
+      {title && <FormTitleStyle>{title}</FormTitleStyle>}
+
       {fields.map((field, index) => (
         <TextField
           key={`${field.id}_${index}`}
@@ -37,6 +40,7 @@ const Form = <T,>(props: IForm<T>) => {
           onChange={formik.handleChange}
         />
       ))}
+
       {buttons.map((button, index) => {
         const { buttonText = "Text", ...buttonProps } = button;
         return (

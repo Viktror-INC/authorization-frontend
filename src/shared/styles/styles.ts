@@ -6,5 +6,4 @@ export const WrapperStyles = styled.section`
   max-width: 1200px;
   justify-content: center;
   margin: 0 auto;
-  padding: 20px;
 `;

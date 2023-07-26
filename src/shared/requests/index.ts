@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const api = axios.create({
   withCredentials: true,
-  baseURL: `${process.env.NEXT_PUBLIC_API_URL}`,
+  baseURL: process.env.NEXT_LOCAL_API_URL || process.env.NEXT_PUBLIC_API_URL,
 });
 
 api.interceptors.response.use(
@@ -21,11 +21,17 @@ api.interceptors.response.use(
         error.response.config._isRetry = true;
 
         // set cookie if user have refresh token
-        await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/refresh`, {
-          withCredentials: true,
-        });
+       await axios.get(
+          `${
+            process.env.NEXT_LOCAL_API_URL || process.env.NEXT_PUBLIC_API_URL
+          }/refresh`,
+          {
+            withCredentials: true,
+          }
+        );
 
-        return api.request(response);
+
+        return api.request(response.config);
       }
 
       return Promise.reject(error);

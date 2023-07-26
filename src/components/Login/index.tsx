@@ -1,7 +1,6 @@
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
-import { FormStyle } from "../Form/styles";
-import { Button, TextField } from "@mui/material";
+import { ThemeProvider } from "@mui/material";
 import { WrapperStyles } from "@/shared/styles/styles";
 import Form from "../Form";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,6 +9,7 @@ import {
   asyncLogin,
   asyncRegistration,
 } from "@/store/slices/user-slice/requests";
+import { theme } from "@/shared/styles/themes";
 
 export const loginInitialValues = {
   email: "",
@@ -59,24 +59,27 @@ const Login: React.FC = () => {
   if (isClient) {
     return (
       <WrapperStyles>
-        <Form
-          formik={formik}
-          fields={fields}
-          buttons={[
-            {
-              type: "submit",
-              variant: "contained",
-              buttonText: "Login",
-              onClick: getLogin,
-            },
-            {
-              type: "submit",
-              variant: "outlined",
-              buttonText: "Registration",
-              onClick: getRegistration,
-            },
-          ]}
-        />
+        <ThemeProvider theme={theme("blue")}>
+          <Form
+            title="Authorization"
+            formik={formik}
+            fields={fields}
+            buttons={[
+              {
+                type: "submit",
+                variant: "contained",
+                buttonText: "Login",
+                onClick: getLogin,
+              },
+              {
+                type: "submit",
+                variant: "outlined",
+                buttonText: "Registration",
+                onClick: getRegistration,
+              },
+            ]}
+          />
+        </ThemeProvider>
       </WrapperStyles>
     );
   }

@@ -7,6 +7,7 @@ import { CircularProgress } from "@mui/material";
 import { PreloaderBody } from "./styles";
 import { setError } from "@/store/slices/user-slice";
 import Notification from "@/shared/components/notification";
+import Header from "../Header";
 
 interface IAuthorization {
   children: ReactNode;
@@ -35,7 +36,7 @@ const Authorization: React.FC<IAuthorization> = ({ children }) => {
     }
 
     return (
-      <div>
+      <>
         <Notification
           open={user.error.show}
           message={user.error.message}
@@ -45,13 +46,16 @@ const Authorization: React.FC<IAuthorization> = ({ children }) => {
           anchorOrigin={{ vertical: "top", horizontal: "center" }}
         />
         {user.isAuth ? (
-          children
+          <>
+            <Header />
+            {children}
+          </>
         ) : (
           <PreloaderBody>
             <Login />
           </PreloaderBody>
         )}
-      </div>
+      </>
     );
   };
 
