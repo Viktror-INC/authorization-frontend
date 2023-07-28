@@ -32,9 +32,6 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    // setAuth: (state, action: PayloadAction<boolean>) => {
-    //   state = { ...state, isAuth: action.payload };
-    // },
     setError: (state, action) => {
       const { show, message } = action.payload;
       state.error = { show, message };

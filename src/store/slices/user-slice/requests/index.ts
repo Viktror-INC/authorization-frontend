@@ -1,7 +1,7 @@
 import { api } from "@/shared/requests";
 import { AuthResponse } from "@/shared/types/response/auth-response";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 
 interface IAsyncLogin {
   email: string;
@@ -16,6 +16,12 @@ interface IResponseError {
   };
 }
 
+const setCookies = (cookies: string[]) => {
+  cookies.forEach((cookie) => {
+    document.cookie = cookie;
+  });
+};
+
 export const asyncLogin = createAsyncThunk(
   "login",
   async ({ email, password }: IAsyncLogin, { rejectWithValue }) => {
@@ -24,6 +30,13 @@ export const asyncLogin = createAsyncThunk(
         email,
         password,
       });
+      const { accessToken, refreshToken } = data;
+      // const cookies = [
+      //   `accessToken=${accessToken}`,
+      //   `refreshToken=${refreshToken}`,
+      // ];
+      // setCookies(cookies)
+      console.log("data>>>", data);
       return data;
     } catch (error) {
       console.log(

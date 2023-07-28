@@ -2,7 +2,7 @@ import { IUser } from "@/shared/types/user-type";
 import { createSlice } from "@reduxjs/toolkit";
 import { asyncGetUsers } from "./requests";
 
-interface IUserSlice {
+export interface IUserSlice {
   users: IUser[];
   error: { show: boolean; message: string };
   isLoading: boolean;
@@ -20,7 +20,7 @@ const initialState = {
 } as IUserSlice;
 
 const allUsersSlice = createSlice({
-  name: "user",
+  name: "allUsers",
   initialState,
   reducers: {
     setError: (state, action) => {

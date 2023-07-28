@@ -1,56 +1,35 @@
-"use client";
+import dynamic from "next/dynamic";
 
-// libraries
-import { useCallback, useEffect, useState } from "react";
-import Web3, { EthExecutionAPI, SupportedProviders } from "web3";
+//components
 
-//store
-import { useDispatch, useSelector } from "react-redux";
-import { asyncLogOut } from "@/store/slices/user-slice/requests";
-import { AppDispatch, RootState } from "@/store";
-import { asyncGetUsers } from "@/store/slices/all-users-slice/requests";
+const SwapWindow = dynamic(() => import("./components/swap-window"));
 
 //styles
-import { PreloaderBody } from "@/components/Authorization/styles";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import {
-  CircularProgress,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-} from "@mui/material";
+import { List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { MainMainPage } from "./styles";
-import Header from "@/components/Header";
-import SwapWindow from "./components/swap-window";
 
-const MainPageView = () => {
-  const allUsers = useSelector((state: RootState) => state.allUsers);
+import { IUserSlice } from "@/store/slices/all-users-slice";
+import { ICoinsSlice } from "@/store/slices/coins-slice";
+
+interface IMainPageView {
+  allUsers: IUserSlice;
+  coins: ICoinsSlice;
+  getAllUsers: () => void;
+}
+
+const MainPageView: React.FC<IMainPageView> = (props) => {
+  const { allUsers, coins, getAllUsers } = props;
   const { users } = allUsers;
-  const dispatch = useDispatch<AppDispatch>();
+  const { coinsList } = coins;
 
-  // const providedUrl = process.env.WEB3_URL;
-
-  if (allUsers.isLoading) {
-    return (
-      <PreloaderBody>
-        <CircularProgress />
-      </PreloaderBody>
-    );
-  }
+  console.log("coins", coins);
 
   return (
     <MainMainPage>
       <div className=" m-10 flex flex-col items-center justify-center gap-y-3 max-w-[1200px] w-full h-full mx-auto">
-        <Button
-          className="mt-10"
-          variant="outlined"
-          onClick={() => dispatch(asyncGetUsers())}
-        >
+        <Button className="mt-10" variant="outlined" onClick={getAllUsers}>
           Get All users
         </Button>
 
@@ -67,7 +46,7 @@ const MainPageView = () => {
           </List>
         )}
 
-        <SwapWindow />
+        {coinsList && <SwapWindow coinsList={coinsList} />}
       </div>
     </MainMainPage>
   );

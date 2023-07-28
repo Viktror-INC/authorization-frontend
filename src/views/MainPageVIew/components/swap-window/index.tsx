@@ -1,10 +1,26 @@
 import React from "react";
-import { SwapInputsWrapStyle, SwapTopStyle, SwapWindowStyle } from "./styles";
+import {
+  SwapInputWrapStyle,
+  SwapInputsWrapStyle,
+  SwapTopStyle,
+  SwapWindowStyle,
+} from "./styles";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { TextField, ThemeProvider } from "@mui/material";
+import {
+  InputAdornment,
+  MenuItem,
+  TextField,
+  ThemeProvider,
+} from "@mui/material";
 import { theme } from "@/shared/styles/themes";
+import { ICoin } from "@/shared/types/coin-type";
 
-const SwapWindow = () => {
+interface ISwapWindow {
+  coinsList: ICoin[];
+}
+
+const SwapWindow: React.FC<ISwapWindow> = (props) => {
+  const { coinsList } = props;
   return (
     <SwapWindowStyle>
       <SwapTopStyle>
@@ -15,19 +31,45 @@ const SwapWindow = () => {
       </SwapTopStyle>
       <SwapInputsWrapStyle>
         <ThemeProvider theme={theme("blue")}>
-          <TextField
-            className=" w-full"
-            id="filled-basic"
-            variant="filled"
-            value={0}
+          <SwapInputWrapStyle>
+            <TextField
+              id="input-with-icon-textfield"
+              label="TextField"
+              className=" w-full"
+            />
 
-          />
-          <TextField
-            className=" w-full"
-            id="filled-basic"
-            variant="filled"
-            value={0}
-          />
+            <TextField
+              select
+              id="filled-basic"
+              className=" flex w-full max-w-[100px]"
+            >
+              {coinsList.map((coin) => (
+                <MenuItem key={coin.ticker} value={coin.ticker}>
+                  {coin.ticker}
+                </MenuItem>
+              ))}
+            </TextField>
+          </SwapInputWrapStyle>
+
+          <SwapInputWrapStyle>
+            <TextField
+              id="input-with-icon-textfield"
+              label="TextField"
+              className=" w-full"
+            />
+
+            <TextField
+              select
+              id="filled-basic"
+              className=" flex w-full max-w-[100px]"
+            >
+              {coinsList.map((coin) => (
+                <MenuItem key={coin.ticker} value={coin.ticker}>
+                  {coin.ticker}
+                </MenuItem>
+              ))}
+            </TextField>
+          </SwapInputWrapStyle>
         </ThemeProvider>
       </SwapInputsWrapStyle>
     </SwapWindowStyle>

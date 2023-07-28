@@ -8,7 +8,7 @@ export const SwapWindowStyle = styled.div`
   width: 100%;
   max-width: 500px;
   color: white;
-  padding: 20px;
+  padding: 30px 20px 50px;
   background: ${colors["blue[850]"]};
   border-radius: 10px;
   border: 1px solid ${colors["blue[800]"]};
@@ -19,6 +19,11 @@ export const SwapTopStyle = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+`;
+
+export const SwapInputWrapStyle = styled.div`
+  width: 100%;
+  display: flex;
 `;
 
 export const SwapInputsWrapStyle = styled.div`
