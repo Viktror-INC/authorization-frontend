@@ -10,13 +10,20 @@ import {
   InputAdornment,
   MenuItem,
   TextField,
+  TextFieldProps,
   ThemeProvider,
 } from "@mui/material";
 import { theme } from "@/shared/styles/themes";
 import { ICoin } from "@/shared/types/coin-type";
 
+type ISwapInputs = TextFieldProps  &  {
+  stateValue: string;
+  onValueChange: (value:string) => void
+}
+
 interface ISwapWindow {
   coinsList: ICoin[];
+  swapInputs: ISwapInputs[]
 }
 
 const SwapWindow: React.FC<ISwapWindow> = (props) => {

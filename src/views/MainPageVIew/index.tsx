@@ -12,6 +12,7 @@ import { MainMainPage } from "./styles";
 
 import { IUserSlice } from "@/store/slices/all-users-slice";
 import { ICoinsSlice } from "@/store/slices/coins-slice";
+import { useReducer } from "react";
 
 interface IMainPageView {
   allUsers: IUserSlice;
@@ -19,12 +20,48 @@ interface IMainPageView {
   getAllUsers: () => void;
 }
 
+// const initialInputsData = [
+//   {
+//     id: 1,
+//     value: "",
+//   },
+//   {
+//     id: 2,
+//     value: "",
+//   },
+// ];
+
+const initialInputsData = {
+  input1:{
+    id: 1,
+    value: "",
+  },
+
+  input2:{
+    id: 1,
+    value: "",
+  }
+}
+
+
+interface IAction { type: keyof typeof initialInputsData; id: number, value:string }
+
+
+const reducer = (state: typeof initialInputsData, action:IAction) => {
+  return {...state, [action.type]: action.value}
+};
+
 const MainPageView: React.FC<IMainPageView> = (props) => {
   const { allUsers, coins, getAllUsers } = props;
   const { users } = allUsers;
   const { coinsList } = coins;
+  const [inputsData, dispatch] = useReducer(reducer, initialInputsData);
 
   console.log("coins", coins);
+
+  const swapInputs = [
+    {stateValue: inputsData.input1.value, onValueChange: (value:string) =>  dispatch({ type: "input1", id: inputsData.input1.id, value })}
+  ]
 
   return (
     <MainMainPage>
@@ -46,7 +83,7 @@ const MainPageView: React.FC<IMainPageView> = (props) => {
           </List>
         )}
 
-        {coinsList && <SwapWindow coinsList={coinsList} />}
+        {coinsList && <SwapWindow coinsList={coinsList} swapInputs={swapInputs}/>}
       </div>
     </MainMainPage>
   );
